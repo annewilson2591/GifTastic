@@ -5,11 +5,36 @@
 //https://developers.giphy.com/docs/
 
 
-//event listener
-$("button").on('click', function(){
+
+
+//on form submit
+$("#form").on("submit", function(event) {
+    //prevent from reloading
+    event.preventDefault();
+    //input value
+    var inputValue = $(".form-control").val().trim();
+    console.log(inputValue)
+    //create new button, append to current buttons
+    var animalButton = $("<button>");
+    
+    //use text in button text 
+    animalButton.text(inputValue);
+
+    //assigning attributes to button
+    animalButton.attr("class", "animal");
+    animalButton.attr("data-animal", inputValue);
+    $("#animal-list").append(animalButton);
+    //click on new button, produce gif, follow rules below 
+    
+}) 
+
+   ////********** */
+    $(document).on('click', "button.animal", function(){
 
     var animal = $(this).attr("data-animal");
     console.log(animal);
+
+   
     
     //construcint URL to search giphy --- ******* needs to be https??
     var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=D7Nq8d0sgNYBxPgM8ZpCS8gxqOCSN611&limit=10";
@@ -21,6 +46,8 @@ $("button").on('click', function(){
         url:queryURL, 
         method:'GET'
     })
+
+
 
         //after data comes back from API
         .then(function(response){
@@ -44,7 +71,14 @@ $("button").on('click', function(){
                 var p = $("<p>").text("Rating: " + rating);
 
                 //giving the image tag an src attribute of a property pulled off the result item
-                animalImage.attr("src", results[i].images.fixed_height.url);
+                //****does not function with "data-still", "data-animate", "data-state", "data-still", "data-animate"*/
+                animalImage.attr("src", results[i].images.fixed_height_still.url);
+                animalImage.attr("data-still", results[i].images.fixed_height_still.url);
+                animalImage.attr("data-state", "still");
+                animalImage.attr("data-animate", results[i].images.fixed_height.url);
+                animalImage.addClass("gif-animal");
+
+                
 
                 //appending the paragraph and animalImage to the "givDiv"
                 gifDiv.append(p);
@@ -53,16 +87,22 @@ $("button").on('click', function(){
                 //prepending the gifDiv to the div in HTML
                 $("#gifs-here").prepend(gifDiv);
             }
+
+            //on click
+            $(document).on("click", ".gif-animal", function() {
+                var state = $(this).attr("data-state");
+
+                //update attr on click to pause and animate
+                if (state === "still") {
+                    $(this).attr("src", $(this).attr("data-animate"));
+                    $(this).attr("data-state", "animate");
+                } else {
+                    $(this).attr("src", $(this).attr("data-still"));
+                    $(this).attr("data-state", "still");
+                }
+            })
+            
         });
 });
-//use a loop that appends each button for a string in the array
+ 
 
-//on click, page grabs 10 static, non-animated gifs
-
-//when user clicks the gif image - animate
-//on second click - pause 
-
-//display rating under the gif
-
-//add a form to the page to take the value from a user input box and adds it to the topics array
-//make a function that takes each topic in the array and remakes the buttons 

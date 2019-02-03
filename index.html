@@ -11,9 +11,11 @@
 <body>
     
     <!--animal buttons-->
-    <button data-animal="zebra">Zebra</button>
-    <button data-animal="pig">Pig</button>
-    <button data-animal="turtle">Turtle</button>
+    <div id="animal-list">
+        <button class="animal" data-animal="zebra">Zebra</button>
+        <button class="animal" data-animal="pig">Pig</button>
+        <button class="animal" data-animal="turtle">Turtle</button>
+    </div>
     <br>
 
     
@@ -26,9 +28,9 @@
                     <div class="col-sm">
                             <div class="card">
                                 <div class="card-body">
-                                    <form>
+                                    <form id="form">
                                         <div class="form-group">
-                                            <label for="new-gifs">Example textarea</label>
+                                            <label for="new-gif">New Animal Here:</label>
                                             <textarea class="form-control" rows="1"></textarea>
                                         </div>
                                             <button type="submit" class="btn btn-danger">Submit</button>
